@@ -72,31 +72,31 @@ Here is the list of messages sent from Server. Only data content is described.
 <br/>|  Size |  Byte  | Port | 
 <br/>+-------+--------+------+
 
->>-) Type 0 is used when client connects to the server. The server answers by sending him a gamePort via clientPort to listen game communications, and a client ID to identify him.
->0     7 8   23 24     32 
->+------+------+--------+ 
->| Type | Game | Client | 
->|   0  | Port |   ID   | 
->+------+------+--------+ 
+<br/><br/>-) Type 0 is used when client connects to the server. The server answers by sending him a gamePort via clientPort to listen game communications, and a client ID to identify him.
+<br/>0     7 8   23 24     32 
+<br/>+------+------+--------+ 
+<br/>| Type | Game | Client | 
+<br/>|   0  | Port |   ID   | 
+<br/>+------+------+--------+ 
 
->>-) Type 1 is used when all players are ready. It broadcasts the time remaining before start.
->0     7 8         15 
->+------+-----------+ 
->| Type |    Time   | 
->|   1  | Remaining | 
->+------+-----------+ 
+<br/><br/>-) Type 1 is used when all players are ready. It broadcasts the time remaining before start.
+<br/>0     7 8         15 
+<br/>+------+-----------+ 
+<br/>| Type |    Time   | 
+<br/>|   1  | Remaining | 
+<br/>+------+-----------+ 
 
->>-) Type 2 is used to broadcast all snakes’ positions to display the game. We communicate the number of snakes then the structure of each one. Snakes are coded so as to decode them starting from the queue. They are represented by giving the queue position (one byte x, one byte y), then the number of times it changes direction, and for each direction the number of points aligned. An extra point, the apple, is given to increment snake’s size if it reaches it.
+<br/><br/>-) Type 2 is used to broadcast all snakes’ positions to display the game. We communicate the number of snakes then the structure of each one. Snakes are coded so as to decode them starting from the queue. They are represented by giving the queue position (one byte x, one byte y), then the number of times it changes direction, and for each direction the number of points aligned. An extra point, the apple, is given to increment snake’s size if it reaches it.
 
->>0     7 8       15 16    i   i+7 i+8  i+15     j    j+15 
->+------+----------+-----+-------+-------+-----+--------+ 
->| Type |  Number  | ... | Snake | Snake | ... |  Apple | 
->|   2  | OfSnakes | ... |  Data |  Data | ... |Position| 
->+------+----------+-----+-------+-------+-----+--------+ 
+<br/><br/>0     7 8       15 16    i   i+7 i+8  i+15     j    j+15 
+<br/>+------+----------+-----+-------+-------+-----+--------+ 
+<br/>| Type |  Number  | ... | Snake | Snake | ... |  Apple | 
+<br/>|   2  | OfSnakes | ... |  Data |  Data | ... |Position| 
+<br/>+------+----------+-----+-------+-------+-----+--------+ 
 
->>One snake is transmitted as followed:
->0      7 8       23 24         31       i       i+7 i+8  i+15 
->+--------+----------+------------+-----+-----------+--------+-----+ 
->| Client |   Queue  |    Number  | ... | Direction | Length | ... | 
->|   ID   | Position | Directions | ... |           |        | ... | 
->+--------+----------+------------+-----+-----------+--------+-----+ 
+<br/><br/>One snake is transmitted as followed:
+<br/>0      7 8       23 24         31       i       i+7 i+8  i+15 
+<br/>+--------+----------+------------+-----+-----------+--------+-----+ 
+<br/>| Client |   Queue  |    Number  | ... | Direction | Length | ... | 
+<br/>|   ID   | Position | Directions | ... |           |        | ... | 
+<br/>+--------+----------+------------+-----+-----------+--------+-----+ 
