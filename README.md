@@ -13,8 +13,11 @@ Implementation of Game Structure
 
 Game should be coded with two levels: a server level and a client level. Server should receive all requests to change snake’s directions, compute their positions then broadcast them. Clients should receive those positions and display them with a graphic interface. If players want to change their snake’s direction, they send it to the server.
 Communications must be implemented with UDP.
-+-------------+ broad Port(=5656) +--------------+ 
+# 
++-------------+ broad Port(=5656) +--------------+
+# 
 |   Game  |---------------------------->| Client | 
+# 
 | Handler |<--------------------------- |        | 
 +-----------------+ inputPort +------------------+
     |
