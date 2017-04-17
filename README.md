@@ -3,11 +3,11 @@
 The Transmission of UDP messages for the Multiplayer Snake Game
 -------------------------------------------------------------------------------------------
 
-#Introduction ----------------
+# Introduction ----------------
 
 This RFC describes the details of communications for the Multiplayer Snake Game.
 
-#Implementation of Game Structure -----------------------------------------------
+# Implementation of Game Structure -----------------------------------------------
 
 Game should be coded with two levels: a server level and a client level. Server should receive all requests to change snake’s directions, compute their positions then broadcast them. Clients should receive those positions and display them with a graphic interface. If players want to change their snake’s direction, they send it to the server.
 Communications must be implemented with UDP.
@@ -24,7 +24,7 @@ Communications must be implemented with UDP.
 +---------------+ gamePort +---------------+
 Clients must listen on port 5656 at initialization. Other ports are communicated by messages.
 
-#Universal Format of messages ---------------------------
+# Universal Format of messages ---------------------------
 Messages have data types so as to be extensible. Types are differently interpreted if read by the client or the server. The common structure is the following:
 
 0        7 
@@ -33,7 +33,7 @@ Messages have data types so as to be extensible. Types are differently interpret
 |  Type  | octets | 
 +--------+--------+
 
-#Messages sent from Client -----------------------------------
+# Messages sent from Client -----------------------------------
 
 Here is the list of messages sent from client. Only data content is described.
 
