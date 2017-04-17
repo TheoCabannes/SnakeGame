@@ -3,27 +3,59 @@
 The Transmission of UDP messages for the Multiplayer Snake Game
 -------------------------------------------------------------------------------------------
 
-Introduction ----------------
+#Introduction ----------------
+
 This RFC describes the details of communications for the Multiplayer Snake Game.
-Implementation of Game Structure -----------------------------------------------
+
+#Implementation of Game Structure -----------------------------------------------
+
 Game should be coded with two levels: a server level and a client level. Server should receive all requests to change snake’s directions, compute their positions then broadcast them. Clients should receive those positions and display them with a graphic interface. If players want to change their snake’s direction, they send it to the server.
 Communications must be implemented with UDP.
-+--------------+ broad Port(=5656) +--------------+ | Game |---------------------------->| Client | | Handler |<---------------------------- | | +--------------+ inputPort +--------------+
-|
-| starts the game V
-+--------------+ clientPort +--------------+ | Game |----------------------------> | Client |
-| Manager |<----------------------------| +--------------+ gamePort +--------------+
++-------------+ broad Port(=5656) +--------------+ 
+|   Game  |---------------------------->| Client | 
+| Handler |<--------------------------- |        | 
++-----------------+ inputPort +------------------+
+    |
+    | starts the game 
+    V
++--------------+ clientPort +--------------+ 
+|  Game   |---------------------> | Client |
+| Manager |<--------------------- |        |
++---------------+ gamePort +---------------+
 Clients must listen on port 5656 at initialization. Other ports are communicated by messages.
-Universal Format of messages ---------------------------
+
+#Universal Format of messages ---------------------------
 Messages have data types so as to be extensible. Types are differently interpreted if read by the client or the server. The common structure is the following:
-07 +-------------+----------------+ |Data|Data | | Type | octets | +-------------+----------------+
-|
-Messages sent from Client -----------------------------------
+
+0        7 
++--------+--------+ 
+|  Data  |  Data  | 
+|  Type  | octets | 
++--------+--------+
+
+#Messages sent from Client -----------------------------------
+
 Here is the list of messages sent from client. Only data content is described.
+
+-) The message broadcasted on port 5656 contains the server name coded in ASCII and the game port.
+0      7 8   7+ns 8+ns 31+ns 
++-------+--------+------+ 
+|  name | Server | game | 
+|  Size |  Byte  | Port | 
++-------+--------+------+
+
 -) Type 0 is used when client connects to the server and must communicate its listening port to inputPort.
-0 78 23 +-------------+------------------+ | Type | Listening | | 0 | Port | +-------------+-------------------+
+0        7 8         23 
++---------+-----------+ 
+|   Type  | Listening | 
+|    0    |    Port   | 
++---------+-----------+
+
 -) Type 2 is used when client wants to change his snake’s direction. It is sent to gamePort. Direction are coded by a byte as followed:
-Left ---> 0 Up ---> 1 Right ---> 2 Down ---> 3
+Left ---> 0 
+Up ---> 1 
+Right ---> 2 
+Down ---> 3
 0 7 8 15 16 23 24 31 +-------------+------------------+------------------+--------------------+ | Type | Task | Client | New | | 2 | ID | ID | Direction | +-------------+------------------+------------------+--------------------+
 Messages sent from Server -----------------------------------
 Here is the list of messages sent from Server. Only data content is described.
