@@ -1,13 +1,15 @@
 # SnakeGame
 
 The Transmission of UDP messages for the Multiplayer Snake Game
--------------------------------------------------------------------------------------------
+---------------------------------------------------------------
 
-# Introduction ----------------
+Introduction 
+------------
 
 This RFC describes the details of communications for the Multiplayer Snake Game.
 
-# Implementation of Game Structure -----------------------------------------------
+Implementation of Game Structure
+--------------------------------
 
 Game should be coded with two levels: a server level and a client level. Server should receive all requests to change snake’s directions, compute their positions then broadcast them. Clients should receive those positions and display them with a graphic interface. If players want to change their snake’s direction, they send it to the server.
 Communications must be implemented with UDP.
