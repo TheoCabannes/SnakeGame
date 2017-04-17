@@ -12,65 +12,65 @@ Implementation of Game Structure
 --------------------------------
 
 Game should be coded with two levels: a server level and a client level. Server should receive all requests to change snake’s directions, compute their positions then broadcast them. Clients should receive those positions and display them with a graphic interface. If players want to change their snake’s direction, they send it to the server.
->Communications must be implemented with UDP.
->+-------------+ broad Port(=5656) +--------------+ 
->|   Game  |---------------------------->| Client | 
->| Handler |<--------------------------- |        | 
->+-----------------+ inputPort +------------------+
->    |
->    | starts the game 
->    V
->+--------------+ clientPort +--------------+ 
->|  Game   |---------------------> | Client |
->| Manager |<--------------------- |        |
->+---------------+ gamePort +---------------+
->Clients must listen on port 5656 at initialization. Other ports are communicated by messages.
+<br/>Communications must be implemented with UDP.
+<br/>+-------------+ broad Port(=5656) +--------------+ 
+<br/>|___Game__|---------------------------->|_Client_| 
+<br/>|_Handler_|<--------------------------- |________| 
+<br/>+-----------------+ inputPort +------------------+
+<br/> ___|
+<br/> ___| starts the game 
+<br/> ___V
+<br/>+--------------+ clientPort +--------------+ 
+<br/>|__Game___|---------------------> |_Client_|
+<br/>|_Manager_|<--------------------- |________|
+<br/>+---------------+ gamePort +---------------+
+<br/>Clients must listen on port 5656 at initialization. Other ports are communicated by messages.
 
 Universal Format of messages 
 ----------------------------
 Messages have data types so as to be extensible. Types are differently interpreted if read by the client or the server. The common structure is the following:
 
->0        7 
->+--------+--------+ 
->|  Data  |  Data  | 
->|  Type  | octets | 
->+--------+--------+
+<br/>0        7 
+<br/>+--------+--------+ 
+<br/>|  Data  |  Data  | 
+<br/>|  Type  | octets | 
+<br/>+--------+--------+
 
 Messages sent from Client 
 -------------------------
 
 Here is the list of messages sent from client. Only data content is described.
 
->>-) Type 0 is used when client connects to the server and must communicate its listening port to inputPort.
->0        7 8         23 
->+---------+-----------+ 
->|   Type  | Listening | 
->|    0    |    Port   | 
->+---------+-----------+
+<br/><br/>-) Type 0 is used when client connects to the server and must communicate its listening port to inputPort.
+<br/>0        7 8         23 
+<br/>+---------+-----------+ 
+<br/>|   Type  | Listening | 
+<br/>|    0    |    Port   | 
+<br/>+---------+-----------+
 
->>-) Type 2 is used when client wants to change his snake’s direction. It is sent to gamePort. Direction are coded by a byte as followed:
->Left ---> 0 
->Up ---> 1 
->Right ---> 2 
->Down ---> 3
+<br/><br/>-) Type 2 is used when client wants to change his snake’s direction. It is sent to gamePort. Direction are coded by a byte as followed:
+<br/>Left ---> 0 
+<br/>Up ---> 1 
+<br/>Right ---> 2 
+<br/>Down ---> 3
 
->>0     7 8   15 16    23 24        31 
->+------+------+--------+-----------+ 
->| Type | Task | Client |    New    | 
->|   2  |  ID  |   ID   | Direction | 
->+------+------+--------+-----------+ 
+<br/><br/>0     7 8   15 16    23 24        31 
+<br/>+------+------+--------+-----------+ 
+<br/>| Type | Task | Client |    New    | 
+<br/>|   2  |  ID  |   ID   | Direction | 
+<br/>+------+------+--------+-----------+ 
 
 Messages sent from Server 
 -------------------------
 
 Here is the list of messages sent from Server. Only data content is described.
 
->>-) The message broadcasted on port 5656 contains the server name coded in ASCII and the game port.
->0      7 8   7+ns 8+ns 31+ns 
->+-------+--------+------+ 
->|  name | Server | game | 
->|  Size |  Byte  | Port | 
->+-------+--------+------+
+<br/>-) The message broadcasted on port 5656 contains the server name coded in ASCII and the game port.
+<br/>0      7 8   7+ns 8+ns 31+ns 
+<br/>+-------+--------+------+ 
+<br/>|  name | Server | game | 
+<br/>|  Size |  Byte  | Port | 
+<br/>+-------+--------+------+
 
 >>-) Type 0 is used when client connects to the server. The server answers by sending him a gamePort via clientPort to listen game communications, and a client ID to identify him.
 >0     7 8   23 24     32 
